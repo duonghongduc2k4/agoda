@@ -96,14 +96,17 @@ public class HouseService implements IHouseService {
             image.setHouse(house);
             iImageRepo.save(image);
         }
-        MultipartFile multipartFile = houseDto.getImage();
-        String filename = multipartFile.getOriginalFilename();
-        FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUpload + filename));
+        MultipartFile[] multipartFile = houseDto.getImage();
 
-        Image image = new Image();
-        image.setNameImage(filename);
-        image.setHouse(house);
-        iImageRepo.save(image);
+        for (MultipartFile file : multipartFile){
+            String filename = file.getOriginalFilename();
+            FileCopyUtils.copy(file.getBytes(), new File(fileUpload + filename));
+
+            Image image = new Image();
+            image.setNameImage(filename);
+            image.setHouse(house);
+            iImageRepo.save(image);
+        }
         return house;
     }
 }

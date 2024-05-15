@@ -12,4 +12,7 @@ import java.util.List;
 @Repository
 public interface IImageRepo extends JpaRepository<Image,Integer>, JpaSpecificationExecutor<Image> {
 
+    @Query("SELECT i FROM Image as i WHERE i.house.id = ?1")
+     List<Image> findImageById(int id);
+
  }

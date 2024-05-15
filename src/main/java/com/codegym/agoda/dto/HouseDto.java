@@ -35,13 +35,13 @@ public class HouseDto {
         this.accountId = accountId;
     }
 
-    private MultipartFile image;
+    private MultipartFile[] image;
 
-    public MultipartFile getImage() {
+    public MultipartFile[] getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(MultipartFile[] image) {
         this.image = image;
     }
 

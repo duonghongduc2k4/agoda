@@ -3,7 +3,9 @@ package com.codegym.agoda.controller;
 import com.codegym.agoda.dto.HouseDto;
 import com.codegym.agoda.dto.PaginateRequest;
 import com.codegym.agoda.model.House;
+import com.codegym.agoda.model.Image;
 import com.codegym.agoda.model.TypeRoom;
+import com.codegym.agoda.repository.IImageRepo;
 import com.codegym.agoda.repository.ITypeRoomRepo;
 import com.codegym.agoda.service.impl.HouseService;
 import com.codegym.agoda.service.impl.TypeRoomService;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +29,8 @@ import java.util.Optional;
 public class HouseController {
     @Autowired
     private HouseService houseService;
+    @Autowired
+    private IImageRepo iImageRepo;
 
 
     @Value("${file-upload}")
@@ -65,11 +70,13 @@ public class HouseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload files");
         }
     }
+
     @PostMapping()
     public ResponseEntity<House> save(@ModelAttribute HouseDto houseDto) throws IOException {
         House house = houseService.saveHouse(houseDto);
         return new ResponseEntity<>(house, HttpStatus.CREATED);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<House> update(@ModelAttribute HouseDto dto, @PathVariable int id) throws IOException {
         if (houseService.findById(id).isPresent()) {
@@ -81,6 +88,17 @@ public class HouseController {
             house.setPrice(dto.getPrice());
             house.setNumberOfBedRoom(dto.getNumberOfBedRoom());
             house.setNumberOfBathRoom(dto.getNumberOfBathRoom());
+
+            MultipartFile[] multipartFile = dto.getImage();
+
+            System.out.println();
+
+            List<Image> images = iImageRepo.findImageById(id);
+            for (Image img : images) {
+                iImageRepo.delete(img);
+            }
+
+
             return new ResponseEntity<>(houseService.saveHouse(dto), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
