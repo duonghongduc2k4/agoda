@@ -93,24 +93,23 @@ public class HouseService implements IHouseService {
             room.setHouse(house);
             iRoomRepo.save(room);
         }
-        if (houseDto.getId() != 0) {
-            Image image = iImageRepo.findByIdHouse(houseDto.getId()).get();
-            iImageRepo.deleteById(image.getId());
-        }
         if (houseDto.getImage() == null) {
             Image image = new Image();
             image.setNameImage("upload/default.jpg");
             image.setHouse(house);
             iImageRepo.save(image);
         }
-        MultipartFile multipartFile = houseDto.getImage();
-        String filename = multipartFile.getOriginalFilename();
-        FileCopyUtils.copy(multipartFile.getBytes(), new File(fileUpload + filename));
+        MultipartFile[] multipartFile = houseDto.getImage();
 
-        Image image = new Image();
-        image.setNameImage(filename);
-        image.setHouse(house);
-        iImageRepo.save(image);
+        for (MultipartFile file : multipartFile){
+            String filename = file.getOriginalFilename();
+            FileCopyUtils.copy(file.getBytes(), new File(fileUpload + filename));
+
+            Image image = new Image();
+            image.setNameImage(filename);
+            image.setHouse(house);
+            iImageRepo.save(image);
+        }
         return house;
     }
 }

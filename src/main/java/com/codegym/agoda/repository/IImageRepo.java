@@ -13,5 +13,5 @@ import java.util.Optional;
 @Repository
 public interface IImageRepo extends JpaRepository<Image, Integer> {
     @Query("from Image as i where i.house.id = ?1")
-    Optional<Image> findByIdHouse(int id);
+    List<Image> findByIdHouse(int id);
 }

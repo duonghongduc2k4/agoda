@@ -3,7 +3,9 @@ package com.codegym.agoda.controller;
 import com.codegym.agoda.dto.HouseDto;
 import com.codegym.agoda.dto.PaginateRequest;
 import com.codegym.agoda.model.House;
+import com.codegym.agoda.model.Image;
 import com.codegym.agoda.model.TypeRoom;
+import com.codegym.agoda.repository.IImageRepo;
 import com.codegym.agoda.repository.ITypeRoomRepo;
 import com.codegym.agoda.service.impl.HouseService;
 import com.codegym.agoda.service.impl.TypeRoomService;
@@ -26,6 +28,8 @@ import java.util.Optional;
 public class HouseController {
     @Autowired
     private HouseService houseService;
+    @Autowired
+    private IImageRepo iImageRepo;
 
 
     @Value("${file-upload}")
@@ -81,6 +85,11 @@ public class HouseController {
             house.setPrice(dto.getPrice());
             house.setNumberOfBedRoom(dto.getNumberOfBedRoom());
             house.setNumberOfBathRoom(dto.getNumberOfBathRoom());
+
+            List<Image> images = iImageRepo.findByIdHouse(id);
+            for (Image img : images) {
+                iImageRepo.delete(img);
+            }
             return new ResponseEntity<>(houseService.saveHouse(dto), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
