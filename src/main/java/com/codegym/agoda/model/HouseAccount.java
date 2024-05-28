@@ -1,5 +1,6 @@
 package com.codegym.agoda.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -13,7 +14,6 @@ public class HouseAccount {
     private String timeStart;
     private String timeEnd;
     private String total ;
-    private String status;
 
     @ManyToOne
     @JoinColumn(name = "house_id")
@@ -22,6 +22,11 @@ public class HouseAccount {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    @JsonIgnore
+    private HouseAccount houseAccount;
 
 
 }

@@ -12,7 +12,6 @@ public class OrderDto {
     private String timeStart;
     private String timeEnd;
     private String total ;
-    private String status;
     private int idHouse;
     private int idAccount;
 
@@ -32,13 +31,7 @@ public class OrderDto {
         this.idHouse = idHouse;
     }
 
-    public String getStatus() {
-        return status;
-    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
 
     public String getTotal() {
         return total;
@@ -77,7 +70,6 @@ public class OrderDto {
         houseAccount.setTimeStart(timeStart);
         houseAccount.setTimeEnd(timeEnd);
         houseAccount.setTotal(total);
-        houseAccount.setStatus(status);
         return houseAccount;
     }
 

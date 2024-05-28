@@ -27,8 +27,13 @@ public class House {
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
+//    @ManyToOne
+//    private Status status;
+
     @ManyToOne
-    private Status status;
+    @JoinColumn(name = "status_id")
+    @JsonIgnore
+    private House house;
 
     @ManyToOne
     private Account account;

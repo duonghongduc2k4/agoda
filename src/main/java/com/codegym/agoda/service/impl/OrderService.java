@@ -60,7 +60,7 @@ public class OrderService {
         String dateStart = dateOnlyFormat.format(str);
         String dateEnd = dateOnlyFormat.format(ed);
 
-        orderDto.setStatus("Chờ nhận phòng");
+
         orderDto.setTimeStart(dateStart);
         orderDto.setTimeEnd(dateEnd);
 

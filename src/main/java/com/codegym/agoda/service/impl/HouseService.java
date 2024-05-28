@@ -76,7 +76,7 @@ public class HouseService implements IHouseService {
 // them nha
         House house = houseDto.toHouse();
         house.setAccount(iAccountRepo.findById(houseDto.getAccountId()).get());
-        house.setStatus(iStatusRepo.findById(3).get());
+//        house.setStatus(iStatusRepo.findById(3).get());
         house = iHouseRepository.save(house);
 
         //them phong
