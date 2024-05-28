@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -52,6 +54,11 @@ public class OrderService {
         String dateStart = dateOnlyFormat.format(str);
         String dateEnd = dateOnlyFormat.format(ed);
 
+        LocalDate a = LocalDate.parse(dateStart);
+        LocalDate b = LocalDate.parse(dateEnd);
+
+        long number = ChronoUnit.DAYS.between(a, b);
+
         orderDto.setStatus("Chờ nhận phòng");
         orderDto.setTimeStart(dateStart);
         orderDto.setTimeEnd(dateEnd);
@@ -65,5 +72,8 @@ public class OrderService {
 
         return houseAccount;
 
+    }
+    public List<HouseAccount> findAllHistory(int id) {
+        return iOrderRepository.findAllHistory(id);
     }
 }

@@ -86,7 +86,7 @@ public class OrderDto {
     public Date getStartTime() throws ParseException {
         // ngày bắt đầu
         String str = date.split("--")[0].trim();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD'T'hh:mma");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         Date date = dateFormat.parse(str);
         return date;
     }
@@ -94,7 +94,7 @@ public class OrderDto {
     public Date getEndTime() throws ParseException {
         // ngày kết thúc
         String str = date.split("--")[1].trim();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD'T'hh:mma");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         Date date = dateFormat.parse(str);
         return date;
     }
