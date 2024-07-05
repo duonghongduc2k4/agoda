@@ -15,5 +15,10 @@ public interface IOrderRepository extends JpaRepository<HouseAccount,Integer> {
     @Query("from HouseAccount  as h where h.house.account.id = ?1")
     List<HouseAccount> findAllByIdHost(int id);
 
+    @Query("from HouseAccount  as h where h.house.id = ?1")
+    List<HouseAccount> findAllByIdHouse(int id);
+
+    @Query("from HouseAccount as h where h.house.id = ?1")
+    List<HouseAccount> findTimes(int id);
 
 }

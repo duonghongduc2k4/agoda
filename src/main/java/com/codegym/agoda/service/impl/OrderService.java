@@ -1,25 +1,21 @@
 package com.codegym.agoda.service.impl;
 
 import com.codegym.agoda.dto.OrderDto;
-import com.codegym.agoda.model.House;
 import com.codegym.agoda.model.HouseAccount;
 import com.codegym.agoda.repository.IAccountRepo;
 import com.codegym.agoda.repository.IHouseRepository;
 import com.codegym.agoda.repository.IOrderRepository;
 import com.codegym.agoda.repository.IStatusRepo;
-import jakarta.persistence.criteria.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -34,7 +30,9 @@ public class OrderService {
     @Autowired
     private IStatusRepo iStatusRepo;
 
-
+    public List<HouseAccount> findTimes (int id) {
+        return iOrderRepository.findTimes(id);
+    }
     public List<HouseAccount> findAllHistory(int id) {
         return iOrderRepository.findAllHistory(id);
     }
@@ -42,10 +40,7 @@ public class OrderService {
     public List<HouseAccount> findAllByIdHost(int id) {
         return iOrderRepository.findAllByIdHost(id);
     }
-    public HouseAccount checkStatus(HouseAccount houseAccount){
-        houseAccount.setStatus(iStatusRepo.findById(6).get());
-        return iOrderRepository.save(houseAccount);
-    }
+
 
     public HouseAccount saveOrder(OrderDto orderDto) throws ParseException {
 
@@ -81,8 +76,7 @@ public class OrderService {
         houseAccount.setHouse(iHouseRepository.findById(orderDto.getIdHouse()).get());
         houseAccount.setStatus(iStatusRepo.findById(3).get());
 
-        House house = iHouseRepository.findById(orderDto.getIdHouse()).get();
-        house.setStatus(iStatusRepo.findById(3).get());
+
 
         houseAccount = iOrderRepository.save(houseAccount);
 

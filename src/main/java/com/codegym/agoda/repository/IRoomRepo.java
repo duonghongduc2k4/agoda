@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface IRoomRepo extends JpaRepository<Room,Integer> {
     @Query("from Room as r where r.house.id = ?1")
-    Iterable<Room> findAllByIdHouse (int id);
+    List<Room> findAllByIdHouse (int id);
+
 }

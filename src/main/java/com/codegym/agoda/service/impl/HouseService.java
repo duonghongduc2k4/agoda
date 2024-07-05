@@ -8,7 +8,6 @@ import com.codegym.agoda.model.*;
 import com.codegym.agoda.repository.*;
 import com.codegym.agoda.service.IHouseService;
 import org.hibernate.mapping.Array;
-import org.hibernate.mapping.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -38,6 +40,8 @@ public class HouseService implements IHouseService {
     private IAccountRepo iAccountRepo;
     @Autowired
     private IStatusRepo iStatusRepo;
+    @Autowired
+    private IOrderRepository iOrderRepository;
 
     @Value("${file-upload}")
     private String fileUpload;
@@ -70,13 +74,41 @@ public class HouseService implements IHouseService {
     }
 
     @Override
+    public void deleteHouse(int id) {
+//       House house=iHouseRepository.findById(id).get();
+
+        List<Room> rooms = iRoomRepo.findAllByIdHouse(id);
+        for (Room room : rooms) {
+            iRoomRepo.deleteById(room.getId());
+        }
+        List<Image> images = iImageRepo.findByIdHouse(id);
+        for (Image image : images) {
+            iImageRepo.deleteById(image.getId());
+        }
+        List<HouseAccount> houseAccounts = iOrderRepository.findAllByIdHouse(id);
+        for (HouseAccount houseAccount : houseAccounts) {
+            iOrderRepository.deleteById(houseAccount.getId());
+
+        }
+        iHouseRepository.deleteById(id);
+    }
+
+
+    @Override
     public House saveHouse(HouseDto houseDto) throws IOException {
+        // Lấy thời gian hiện tại
 //        them thang nguoi dang nha
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime nowWithoutSeconds = now.truncatedTo(ChronoUnit.MINUTES);
 
 // them nha
         House house = houseDto.toHouse();
         house.setAccount(iAccountRepo.findById(houseDto.getAccountId()).get());
         house.setStatus(iStatusRepo.findById(1).get());
+
+        house.setCreatedAt(nowWithoutSeconds); // Đặt thời gian tạo
+        house.setUpdatedAt(nowWithoutSeconds); // Đặt thời gian cập nhật
+
         house = iHouseRepository.save(house);
 
         //them phong
@@ -97,7 +129,7 @@ public class HouseService implements IHouseService {
         }
         MultipartFile[] multipartFile = houseDto.getImage();
 
-        for (MultipartFile file : multipartFile){
+        for (MultipartFile file : multipartFile) {
             String filename = file.getOriginalFilename();
             FileCopyUtils.copy(file.getBytes(), new File(fileUpload + filename));
 

@@ -6,6 +6,7 @@ import com.codegym.agoda.repository.IStatusRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -19,6 +20,8 @@ public class HouseDto {
     private double price;
     private String numberOfBedRoom;
     private String numberOfBathRoom;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     //doanh thu
     private List<RoomDto> rooms;
     private double revenue;
@@ -65,6 +68,7 @@ public class HouseDto {
         return this;
     }
 
+
     public int getAccountId() {
         return accountId;
     }
@@ -102,6 +106,8 @@ public class HouseDto {
         house.setDescription(description);
         house.setPrice(price);
         house.setRevenue(revenue);
+        house.setCreatedAt(createdAt);
+        house.setUpdatedAt(updatedAt);
         house.setNumberOfBedRoom(getNumberOfBedRoom());
         house.setNumberOfBathRoom(getNumberOfBathRoom());
         return house;
@@ -140,6 +146,24 @@ public class HouseDto {
 
     public HouseDto setAddress(String address) {
         this.address = address;
+        return this;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public HouseDto setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public HouseDto setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
         return this;
     }
 

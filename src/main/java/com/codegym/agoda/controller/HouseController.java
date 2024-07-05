@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,7 +88,9 @@ public class HouseController {
     }
     @PostMapping()
     public ResponseEntity<House> save(@ModelAttribute HouseDto houseDto) throws IOException {
+
         House house = houseService.saveHouse(houseDto);
+
         return new ResponseEntity<>(house, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
@@ -114,6 +117,11 @@ public class HouseController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteResource(@PathVariable int id) {
+       houseService.deleteHouse(id);
+            return new ResponseEntity<>( HttpStatus.OK);
     }
 
 }
